@@ -22,3 +22,16 @@ $ conda activate rag_app
 export PS1="\[\033[01;32m\]\u@\h:\w\n\[\033[00m\]\$ "
 ```
 
+## Installation 
+
+### Install the Requirment packages 
+
+```bash
+$ pip install -r requirements.txt
+```
+### Setup the enviroment variables 
+```bash
+$ cp .env.example .env
+```
+
+set your enviroment variables in the `.env` file. like `OPENAI_API_KEY` value.
