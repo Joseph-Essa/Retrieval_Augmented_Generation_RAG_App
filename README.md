@@ -11,7 +11,7 @@ This is the minimal implementation of the RAG model for Question Answering .
 1) Download miniconda from [here](https://www.anaconda.com/docs/getting-started/miniconda/install)
 2) create a new enviroment Using following comand :
 ```bash
-$ conda craete -n rag_app python=3.8
+$ conda craete -n rag_app python=3.10
 ```
 3) Activate the enviroment :
 ```bash
