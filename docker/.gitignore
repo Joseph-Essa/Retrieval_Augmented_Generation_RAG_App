@@ -1,0 +1,36 @@
+# ┌────────────────────────────────────────────────────────────┐
+# │  .gitignore for ignoring Docker‐MongoDB artifacts         │
+# └────────────────────────────────────────────────────────────┘
+
+# 1) Ignore MongoDB data directories
+#    → Adjust these to match your host‐mount path(s) for MongoDB’s /data/db  
+#    For example, if your docker-compose.yml mounts ./mongo-data:/data/db, ignore ./mongo-data/
+mongo-data/
+data/db/
+db/
+dump/
+
+# 2) Ignore MongoDB lock/journal files (if kept in repo tree by accident)
+*.lock
+journal/
+
+# 3) Ignore Docker environment / override files
+#    (You usually commit Dockerfile/docker-compose.yml itself, but skip overrides or .envs)
+.env
+docker-compose.override.yml
+docker-compose.*.env
+
+# 4) Ignore Docker‐generated log files (optional)
+*.log
+logs/
+
+# 5) (Optional) Ignore Docker machine/certs if you’re using docker‐machine locally
+~/.docker/machine/machines/
+
+# 6) (Optional) Ignore other Docker cruft
+*.pid
+*.sock
+
+# ┌────────────────────────────────────────────────────────────┐
+# │  End of .gitignore                                         │
+# └────────────────────────────────────────────────────────────┘
