@@ -4,7 +4,7 @@ This is the minimal implementation of the RAG model for Question Answering .
 
 ## Requirements
 
-- python 3.8 or later 
+- python 3.10 or later 
 
 #### install python using miniconda 
 
