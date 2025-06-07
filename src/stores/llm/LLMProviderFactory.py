@@ -1,4 +1,4 @@
-from .LLMEnums import LLMEnum
+from .LLMEnums import LLMEnums
 from .providers import OpenAIProvider , CoHereProvider
 
 class LLMProviderFactory:
@@ -8,7 +8,7 @@ class LLMProviderFactory:
         
     def create (self , provider : str) : 
         
-        if provider == LLMEnum.GEMINI.value : 
+        if provider == LLMEnums.GEMINI.value : 
             return OpenAIProvider(
                 api_key = self.config.GEMINI_API_KEY ,
                 api_url = self.config.GEMINI_API_URL ,
@@ -18,7 +18,7 @@ class LLMProviderFactory:
             )
         
             
-        if provider == LLMEnum.COHERE.value : 
+        if provider == LLMEnums.COHERE.value : 
             return CoHereProvider(
                 api_key = self.config.COHERE_API_KEY,
                 default_input_max_characters = self.config.INPUT_DAFAULT_MAX_CHARACTERS , 
