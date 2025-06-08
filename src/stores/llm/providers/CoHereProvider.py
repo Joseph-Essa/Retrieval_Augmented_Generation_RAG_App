@@ -22,7 +22,7 @@ class CoHereProvider (LLMInterface):
         self.embedding_size = None
         
         self.client = cohere.Client(api_key=self.api_key)
-        
+        self.enums =CoHereEnum
         self.logger = logging.getLogger(__name__)
 
     def set_generation_model(self, model_id: str):
@@ -39,10 +39,10 @@ class CoHereProvider (LLMInterface):
                        max_output_tokens : int=None , temperature : float=None ) :
         
         if not self.client : 
-            self.logger.error ("CoHere Client Was Not Set ")
+            self.logger.error (f"CoHere Client Was Not Set ")
             return None
         if not self.generation_model_id : 
-            self.logger.error ("Generation Model For CoHere Was Not Set ")
+            self.logger.error (f"Generation Model For CoHere Was Not Set ")
             return None
         
         max_output_tokens = max_output_tokens if max_output_tokens  else self .default_generation_max_output_tokens
