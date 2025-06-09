@@ -54,3 +54,6 @@ $ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ## POSTMAN Colection
 
 Download the POSTMAN collection from [/assets/rag_app.postman_collection.json](/assets/rag_app.postman_collection.json)
+
+
+##Note : This is not the Final Version , App still in progress
