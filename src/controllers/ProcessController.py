@@ -7,6 +7,7 @@ from langchain_community.document_loaders import PyMuPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from models import ProcessingEnum
 
+
 class ProcessController(BaseController):
     def __init__(self , project_id : str):
         super().__init__()
@@ -30,7 +31,7 @@ class ProcessController(BaseController):
             return TextLoader(file_path , encoding="utf-8")
         
         elif file_extension == ProcessingEnum.PDF.value:
-            return PyMuPDFLoader(file_path , encoding="utf-8")
+            return PyMuPDFLoader(file_path)
         
         return None
     
