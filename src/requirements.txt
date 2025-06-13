@@ -12,6 +12,7 @@ cohere==5.15.0
 gemini-api==0.1.6
 ollama==0.5.1
 qdrant-client==1.14.2
-
-
-
+SQLAlchemy==2.0.41
+asyncpg==0.30.0
+alembic==1.16.1
+psycopg2==2.9.10
