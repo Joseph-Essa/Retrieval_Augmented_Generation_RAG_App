@@ -1,20 +1,15 @@
 from fastapi import FastAPI ,APIRouter ,Depends , UploadFile , status , Request
 from fastapi.responses import JSONResponse
-# from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
 from helpers.config import get_settings , Settings
-from controllers import DataController
-from controllers import ProjectController , ProcessController
+from controllers import DataController ,ProjectController , ProcessController
 import aiofiles
 from models import ResponseSignal
 import logging
 from .schemes.data import ProcessRequest
-from models.ProjectModel import ProjectModel
-from models.ChunkModel import ChunkModel
-from models.AssetModel import AssetModel
-from models.db_schemes import DataChunk ,Asset
 from models.enums.AssetTypeEnum import AssetTypeEnum
+from services.db_factory import DatabaseModelFactory 
 
 logger = logging.getLogger('uvicorn.error')
 
@@ -24,15 +19,13 @@ data_router = APIRouter(
     tags=["api_v1","data"] 
 )
 
-@data_router.post("/upload/{project_id}")
+@data_router.post("/upload/{database_type}/{project_id}")
 
-async def upload_data(request : Request ,  project_id : str , file : UploadFile , 
+async def upload_data(request : Request ,  project_id : int, database_type : str , file : UploadFile , 
                         app_settings: Settings = Depends(get_settings) ):
     
-    project_model = await ProjectModel.create_instance(db_client = request.app.db_client)
-    
+    project_model, asset_model, chunk_model, DataChunk ,Asset = await DatabaseModelFactory.get_models(database_type, request)
     project = await project_model.get_project_or_create_one(project_id=project_id)
-    
 
     #val file properties 
     data_controller = DataController()
@@ -65,7 +58,6 @@ async def upload_data(request : Request ,  project_id : str , file : UploadFile 
         )
 
     #store asset to db 
-    asset_model = await AssetModel.create_instance(db_client = request.app.db_client)
 
     asset_resource = Asset(
         asset_project_id = project.id,
@@ -80,25 +72,21 @@ async def upload_data(request : Request ,  project_id : str , file : UploadFile 
         content = {
             "signal" : ResponseSignal.FILE_UPLOAD_SUCCESS.value ,
             "file_id" : str(asset_record.id),
-            # "project_id" : project_id
-            
         }
     )
     
     
 
-@data_router.post("/process/{project_id}")
+@data_router.post("/process/{database_type}/{project_id}")
 
-async def process_endpoint(request : Request ,project_id: str , process_request : ProcessRequest):
+async def process_endpoint(request : Request ,project_id: int , database_type : str, process_request : ProcessRequest):
     
     chunk_size = process_request.chunk_size
     overlap_size = process_request.overlap_size
     do_reset = process_request.do_reset
     
-    project_model = await ProjectModel.create_instance(db_client = request.app.db_client)
+    project_model, asset_model, chunk_model, DataChunk ,Asset = await DatabaseModelFactory.get_models(database_type, request)
     project = await project_model.get_project_or_create_one(project_id=project_id)
-    
-    asset_model = await AssetModel.create_instance(db_client = request.app.db_client)
     
     project_files_ids ={}
     if process_request.file_id : 
@@ -144,7 +132,6 @@ async def process_endpoint(request : Request ,project_id: str , process_request 
     no_records = 0
     no_files = 0
     
-    chunk_model = await ChunkModel.create_instance(db_client = request.app.db_client)
     if do_reset == 1 :
             _ = await chunk_model.delete_chunks_by_project_id(project_id=project.id)
     
