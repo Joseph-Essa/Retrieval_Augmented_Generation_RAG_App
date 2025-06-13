@@ -2,8 +2,8 @@ from fastapi import FastAPI ,APIRouter ,Depends , UploadFile , status , Request
 from fastapi.responses import JSONResponse
 from .schemes.nlp import PushRequest , SearchRequest
 import logging
-from models.ProjectModel import ProjectModel
-from models.ChunkModel import ChunkModel
+from models.db_schemes.ragapp_mongodb import ProjectModel
+from models.db_schemes.ragapp_mongodb import ChunkModel
 from controllers import NLPController
 from models import ResponseSignal
 
@@ -15,8 +15,9 @@ nlp_router = APIRouter(
 )
 
 @nlp_router.post ("/index/push/{project_id}")
-async def index_project (request : Request , project_id : str , push_request : PushRequest) : 
+async def index_project (request : Request , project_id : int , push_request : PushRequest) : 
     
+    # if  database_type == "mongodb" :
     project_model = await ProjectModel.create_instance(db_client = request.app.db_client)
     chunk_model = await ChunkModel.create_instance(db_client = request.app.db_client)
     project = await project_model.get_project_or_create_one(project_id=project_id)
@@ -49,9 +50,8 @@ async def index_project (request : Request , project_id : str , push_request : P
             break
         
         # set incrimintal IDs for chunks
-        chunks_ids = list (range(idx , idx + len(page_chunks)))
+        chunks_ids =  list(range(idx, idx + len(page_chunks)))
         idx += len(page_chunks)
-        
         
         is_inserted = nlp_controller.index_into_vector_db(project=project , 
                                                           chunks=page_chunks , 
@@ -78,7 +78,7 @@ async def index_project (request : Request , project_id : str , push_request : P
             
 @nlp_router.get("/index/info/{project_id}")
 
-async def get_project_index_info (request : Request , project_id : str) : 
+async def get_project_index_info (request : Request , project_id : int) : 
     
     project_model = await ProjectModel.create_instance(db_client = request.app.db_client)
     project = await project_model.get_project_or_create_one(project_id=project_id)
@@ -103,7 +103,7 @@ async def get_project_index_info (request : Request , project_id : str) :
     
     
 @nlp_router.post("/index/search/{project_id}") 
-async def  search_index( request : Request , project_id : str ,  search_request : SearchRequest) : 
+async def  search_index( request : Request , project_id : int ,  search_request : SearchRequest) : 
     
     project_model = await ProjectModel.create_instance(db_client = request.app.db_client)
     project = await project_model.get_project_or_create_one(project_id=project_id)
@@ -134,7 +134,7 @@ async def  search_index( request : Request , project_id : str ,  search_request 
     )
     
 @nlp_router.post("/index/answer/{project_id}") 
-async def  search_index( request : Request , project_id : str ,  search_request : SearchRequest) : 
+async def  search_index( request : Request , project_id : int ,  search_request : SearchRequest) : 
     
     project_model = await ProjectModel.create_instance(db_client = request.app.db_client)
     project = await project_model.get_project_or_create_one(project_id=project_id)
