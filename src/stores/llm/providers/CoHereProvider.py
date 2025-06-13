@@ -87,5 +87,8 @@ class CoHereProvider (LLMInterface):
         
     def constaract_prompt(self, prompt: str, role: str):
 
-        return {"role": role, 
-                "text": self.process_text(prompt)}
+        return {
+            
+            "role": role, 
+            "text": prompt
+        }
