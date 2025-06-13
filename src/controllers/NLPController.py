@@ -1,5 +1,5 @@
 from .BaseController import BaseController
-from models.db_schemes import Project , DataChunk
+from models.db_schemes.ragapp_mongodb.schemes import Project , DataChunk
 from typing import List
 from stores.llm.LLMEnums import DocumentTypeEnum
 import json
@@ -108,22 +108,11 @@ class NLPController (BaseController) :
         
         system_prompt = self.template_parser.get("rag" , "system_prompt")
         
-        # documents_prompts = []
-        
-        # for idx,doc in enumerate(retrieved_documents)  :
-        #     documents_prompts.append(
-        #         self.template_parser.get("rag" , "document_prompt" , {
-        #             "doc_num" : idx+1,
-        #             "chunk_text" : doc.text,
-        #         })
-        #     )
-        
-        # comprehensive list (more efficient) : 
-         
+        # comprehensive list (more efficient) :  
         documents_prompts = "\n".join([
             self.template_parser.get("rag" , "document_prompt" , {
                     "doc_num" : idx+1,
-                    "chunk_text" : doc.text,
+                    "chunk_text" : self.generation_client.process_text(doc.text) ,
                 })
             for idx,doc in enumerate(retrieved_documents)
         ])
