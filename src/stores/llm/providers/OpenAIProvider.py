@@ -87,5 +87,8 @@ class OpenAIProvider(LLMInterface):
 
     def constaract_prompt(self, prompt: str, role: str):
         # Due to OpenAI Docs
-        return {"role": role, 
-                "content": self.process_text(prompt)}
+        return {
+            
+            "role": role, 
+            "content": prompt
+        }
