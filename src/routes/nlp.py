@@ -29,11 +29,12 @@ async def index_project (request : Request , project_id : int , push_request : P
                 "signal" : ResponseSignal.PROJECT_NOT_FOUND.value
             }
         )
-    nlp_controller = NLPController(vectordb_client = request.app.vectordb_client , 
-                                   generation_client = request.app.generation_client , 
-                                   embedding_client = request.app.embedding_client ,
-                                   template_parser = request.app.template_parser
-                                   )
+    nlp_controller = NLPController(
+        vectordb_client = request.app.vectordb_client , 
+        generation_client = request.app.generation_client , 
+        embedding_client = request.app.embedding_client ,
+        template_parser = request.app.template_parser
+        )
     has_records = True
     page_no = 1
     inserted_items_count = 0
@@ -53,11 +54,12 @@ async def index_project (request : Request , project_id : int , push_request : P
         chunks_ids =  list(range(idx, idx + len(page_chunks)))
         idx += len(page_chunks)
         
-        is_inserted = nlp_controller.index_into_vector_db(project=project , 
-                                                          chunks=page_chunks , 
-                                                          do_reset=push_request.do_reset , 
-                                                          chunks_ids=chunks_ids
-                                                          )
+        is_inserted = nlp_controller.index_into_vector_db(
+                                                    project=project , 
+                                                    chunks=page_chunks , 
+                                                    do_reset=push_request.do_reset , 
+                                                    chunks_ids=chunks_ids
+                                                        )
     
         if not is_inserted : 
             return JSONResponse(
