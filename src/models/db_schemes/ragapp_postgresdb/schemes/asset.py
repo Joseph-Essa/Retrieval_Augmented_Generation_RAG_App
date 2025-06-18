@@ -1,5 +1,5 @@
 from .ragapp_base import SQLAlchemyBase
-from sqlalchemy import Column, Integer, String, DateTime , func , ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime , func , ForeignKey,Boolean
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.orm import relationship
 from sqlalchemy import Index
@@ -20,6 +20,8 @@ class Asset(SQLAlchemyBase):
     
     asset_project_id  = Column(Integer, ForeignKey("projects.id"), nullable=False)
     
+    is_processed = Column(Boolean, nullable=False, default=False, server_default='false')
+    
     project = relationship("Project", back_populates="assets")
     chunks = relationship("DataChunk", back_populates="asset")
     
@@ -29,4 +31,5 @@ class Asset(SQLAlchemyBase):
     __table_args__ = (
         Index('ix_asset_project_id',asset_project_id) , 
         Index('ix_asset_type',asset_type) ,
+        Index('ix_asset_is_processed', is_processed),
     )

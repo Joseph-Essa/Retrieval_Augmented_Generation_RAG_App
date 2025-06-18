@@ -12,7 +12,8 @@ class Asset (BaseModel) :
     asset_name : str = Field (... , min_length = 1)
     asset_size : int = Field (ge = 0 , default = None)
     asst_config : dict = Field (default = None)
-    asset_pushed_at : datetime = Field (default = datetime.utcnow)
+    asset_pushed_at: datetime = Field(default_factory=datetime.utcnow)
+    is_processed: bool = Field(default=False)
     
     class Config:
         arbitrary_types_allowed = True
@@ -36,6 +37,11 @@ class Asset (BaseModel) :
                 ] , 
                 "name" : "asset_ Project_id_name_index_1" ,
                 "unique" : True
-            } 
+            } ,
+            {
+            "key": [("is_processed", 1)],
+            "name": "asset_is_processed_index",
+            "unique": False
+            }
             
         ]
