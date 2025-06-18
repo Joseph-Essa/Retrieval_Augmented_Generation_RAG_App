@@ -64,3 +64,9 @@ class AssetModel(BaseDataModel):
             return Asset(**record)
         
         return None 
+    
+    async def mark_as_processed(self, asset_id: ObjectId, is_processed: bool = True):
+        await self.collection.update_one(
+            {"_id": asset_id},
+            {"$set": {"is_processed": is_processed}}
+        )

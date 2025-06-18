@@ -2,7 +2,8 @@ from .BaseDataModel import BaseDataModel
 from .schemes import Asset
 from models.enums.DataBaseEnum import DataBaseEnum
 from bson import ObjectId
-from sqlalchemy import select, delete
+from sqlalchemy import select, delete 
+from sqlalchemy import update
 from sqlalchemy import func
 
 
@@ -50,3 +51,9 @@ class AssetModel(BaseDataModel):
             result = await session.execute(stmt)
             record = result.scalar_one_or_none()
         return record
+    
+    async def mark_as_processed(self, asset_id: int, is_processed: bool = True):
+        async with self.db_client() as session:
+            stmt = update(Asset).where(Asset.id == asset_id).values(is_processed=is_processed)
+            await session.execute(stmt)
+            await session.commit()
