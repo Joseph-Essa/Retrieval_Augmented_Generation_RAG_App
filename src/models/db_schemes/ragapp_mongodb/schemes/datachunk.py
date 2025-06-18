@@ -25,6 +25,11 @@ class DataChunk(BaseModel):
                 ] , 
                 "name" : "__chunk_Project_id_index_1" ,
                 "unique" : False
+            },
+            {
+                "key": [("chunk_asset_id", 1), ("chunk_order", 1)],
+                "name": "chunk_asset_id_order_index",
+                "unique": True
             }
         ]
     

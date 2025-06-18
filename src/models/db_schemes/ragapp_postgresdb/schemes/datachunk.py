@@ -33,4 +33,4 @@ class DataChunk(SQLAlchemyBase):
     
 class RetrievedDocument (BaseModel) : 
     text : str 
-    score : float
+    score : float 
