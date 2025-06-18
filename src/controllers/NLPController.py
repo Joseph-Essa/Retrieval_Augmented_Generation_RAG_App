@@ -51,19 +51,21 @@ class NLPController (BaseController) :
          
         # create clllection if not exists
          
-        _ = self.vectordb_client.create_collection(collection_name=collection_name , 
-                                                   do_reset=do_reset , 
-                                                   embedding_size = self.embedding_client.embedding_size)
+        _ = self.vectordb_client.create_collection(
+                                                collection_name=collection_name , 
+                                                do_reset=do_reset , 
+                                                embedding_size = self.embedding_client.embedding_size
+                                                )
         
         
         # insert into vector db 
         
         _ = self.vectordb_client.insert_many(collection_name=collection_name , 
-                                             texts = texts , 
-                                             metadata=metadata , 
-                                             vectors = vectors,
-                                             record_ids = chunks_ids
-                                             )
+                                            texts = texts , 
+                                            metadata=metadata , 
+                                            vectors = vectors,
+                                            record_ids = chunks_ids
+                                            )
         return True
     
         
