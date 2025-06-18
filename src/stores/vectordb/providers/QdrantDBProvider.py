@@ -41,11 +41,11 @@ class QdrantDBProvider(VectorDBInterface):
             return self.client.delete_collection(collection_name= collection_name)
     
     def create_collection (self, collection_name : str ,
-                                 embedding_size : int ,
-                                 do_reset : bool = False) : 
+                                embedding_size : int ,
+                                do_reset : bool = False) : 
         
         if do_reset : 
-             _ =self.delete_collection(collection_name=collection_name)
+            _ =self.delete_collection(collection_name=collection_name)
         if not self.is_collection_existed(collection_name=collection_name) : 
             self.client.create_collection(collection_name = collection_name ,
                                           vectors_config = models.VectorParams(size = embedding_size ,
