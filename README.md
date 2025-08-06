@@ -1,4 +1,4 @@
-# 🧠 Rag-App
+# Rag-App
 
 This is a minimal yet extensible implementation of a **Retrieval-Augmented Generation (RAG)** system for Question Answering using FastAPI, Dockerized vector databases (MongoDB with Quadrant, PostgreSQL with PGVector), and HNSW indexing for efficient similarity search.
 
