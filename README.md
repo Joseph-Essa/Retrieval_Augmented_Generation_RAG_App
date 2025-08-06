@@ -110,26 +110,7 @@ You can test the API using Postman. Import the collection from:
 POST /query
 
 Request:
-{
-  "query": "What is the capital of France?",
-  "top_k": 3
-}
 
-Response:
-{
-  "results": [
-    {
-      "source": "mongo_quadrant",
-      "text": "Paris is the capital of France.",
-      "score": 0.98
-    },
-    {
-      "source": "pgvector_postgres",
-      "text": "France's capital is Paris.",
-      "score": 0.95
-    }
-  ]
-}
 ```
 
 ---
